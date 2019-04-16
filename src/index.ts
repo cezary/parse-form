@@ -43,9 +43,7 @@ export function parse(form: HTMLFormElement, shallow?: boolean) {
         break;
       case "checkbox":
       case "radio":
-        if (el.checked) {
-          set(body, name, el.value);
-        }
+        set(body, name, el.checked);
         break;
       case "select-one":
         if (el.selectedIndex >= 0) {
