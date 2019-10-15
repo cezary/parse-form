@@ -76,33 +76,35 @@ export function parse(form: HTMLFormElement, shallow?: boolean) {
   return { body, files };
 }
 
-/**
- * Tracks which button submitted a form last.
- * This is a patch for safari which does not properly focus the clicked button.
- */
-let clickTarget: HTMLButtonElement = null;
-/* istanbul ignore next */
-window.addEventListener("click", (e: MouseEvent) => {
-  // Ignore canceled events, modified clicks, and right clicks.
-  if (
-    e.defaultPrevented ||
-    e.metaKey ||
-    e.ctrlKey ||
-    e.shiftKey ||
-    e.button !== 0
-  ) {
-    return;
-  }
+if (typeof window !== 'undefined') {
+  /**
+   * Tracks which button submitted a form last.
+   * This is a patch for safari which does not properly focus the clicked button.
+   */
+  let clickTarget: HTMLButtonElement = null;
+  /* istanbul ignore next */
+  window.addEventListener("click", (e: MouseEvent) => {
+    // Ignore canceled events, modified clicks, and right clicks.
+    if (
+      e.defaultPrevented ||
+      e.metaKey ||
+      e.ctrlKey ||
+      e.shiftKey ||
+      e.button !== 0
+    ) {
+      return;
+    }
 
-  let el = e.target as HTMLButtonElement;
-  // Find an <button> element that may have been clicked.
-  while (el != null && (el.nodeName !== "BUTTON" || el.type !== "submit")) {
-    el = el.parentNode as HTMLButtonElement;
-  }
+    let el = e.target as HTMLButtonElement;
+    // Find an <button> element that may have been clicked.
+    while (el != null && (el.nodeName !== "BUTTON" || el.type !== "submit")) {
+      el = el.parentNode as HTMLButtonElement;
+    }
 
-  // Store the button that was clicked.
-  clickTarget = el;
-});
+    // Store the button that was clicked.
+    clickTarget = el;
+  });
+}
 
 /**
  * Patch for document.activeElement for safari.
