@@ -76,12 +76,13 @@ export function parse(form: HTMLFormElement, shallow?: boolean) {
   return { body, files };
 }
 
+
+/**
+ * Tracks which button submitted a form last.
+ * This is a patch for safari which does not properly focus the clicked button.
+ */
+let clickTarget: HTMLButtonElement = null;
 if (typeof window !== 'undefined') {
-  /**
-   * Tracks which button submitted a form last.
-   * This is a patch for safari which does not properly focus the clicked button.
-   */
-  let clickTarget: HTMLButtonElement = null;
   /* istanbul ignore next */
   window.addEventListener("click", (e: MouseEvent) => {
     // Ignore canceled events, modified clicks, and right clicks.
